@@ -7,6 +7,7 @@ echo "*** It will take around 10 minutes for this script to complete.***"
 
 # Cleanup
 sh Clean.sh
+rm -rf ./build
 rm -r ./TestResults
 
 cd include_coyote/include
@@ -25,7 +26,9 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD
 cd ..
 
 # Build Memcached
-mkdir build && cd build
+mkdir build
+cd build
+../autogen.sh
 ../configure
 make memcached-debug -j2
 

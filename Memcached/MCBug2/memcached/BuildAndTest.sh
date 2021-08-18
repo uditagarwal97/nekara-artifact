@@ -26,6 +26,7 @@ cd ..
 
 # Build Memcached
 mkdir build && cd build
+../autoconf
 ../configure
 make memcached-debug -j2
 
