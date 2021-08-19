@@ -1,3 +1,5 @@
+#!/bin/bash
+
 rm nohup*
 rm -r TestResults
 make clean 2> /dev/null

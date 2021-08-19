@@ -106,7 +106,7 @@
 
  #define pthread_cond_init(x, y) FFI_pthread_cond_init(x, y)
  #define pthread_cond_wait(x, y) FFI_pthread_cond_wait(x, y)
- #define pthread_cond_timedwait(x, y, z) FFI_pthread_cond_timedwait(x, y, z)
+ #define pthread_cond_timedwait(x, y, z) FFI_pthread_cond_wait(x, y)
  #define pthread_cond_signal(x) FFI_pthread_cond_signal(x)
  #define pthread_cond_broadcast(x) FFI_pthread_cond_signal(x)
  #define pthread_cond_destory(x) FFI_pthread_cond_signal(x)

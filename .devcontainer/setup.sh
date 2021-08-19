@@ -43,6 +43,9 @@ fi
 
 apt-get -y --no-install-recommends install dotnet-sdk-5.0
 
+# Install Memcached dependeincies
+apt-get install git libevent-dev cmake ninja-build autoconf g++ bc libbz2-dev  -y
+
 # Build the artifact.
 git submodule sync --recursive
 git submodule update --init --recursive

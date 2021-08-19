@@ -6091,7 +6091,7 @@ int main (int argc, char **argv) {
 #endif
     }
 
-    /* lose root privileges if we have them */
+    /*
     if (getuid() == 0 || geteuid() == 0) {
         if (username == 0 || *username == '\0') {
             fprintf(stderr, "can't run as root without the -u switch\n");
@@ -6102,12 +6102,6 @@ int main (int argc, char **argv) {
             exit(EX_NOUSER);
         }
         if (setgroups(0, NULL) < 0) {
-            /* setgroups may fail with EPERM, indicating we are already in a
-             * minimally-privileged state. In that case we continue. For all
-             * other failure codes we exit.
-             *
-             * Note that errno is stored here because fprintf may change it.
-             */
             bool should_exit = errno != EPERM;
             fprintf(stderr, "failed to drop supplementary groups: %s\n",
                     strerror(errno));
@@ -6120,6 +6114,7 @@ int main (int argc, char **argv) {
             exit(EX_OSERR);
         }
     }
+    */
 
     /* Initialize Sasl if -S was specified */
     if (settings.sasl) {

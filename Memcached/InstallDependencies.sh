@@ -1,7 +1,7 @@
 #!/bin/bash
 
-sudo apt-get update
-sudo apt-get upgrade -y
+apt-get update
+apt-get upgrade -y
 
-sudo apt-get install git libevent-dev cmake ninja-build autoconf g++ -y
+apt-get install git libevent-dev cmake ninja-build autoconf g++ bc -y
 git config --global core.autocrlf false

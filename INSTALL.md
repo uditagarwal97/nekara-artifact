@@ -52,7 +52,7 @@ Click "Install" to install the extension.
 ### Building and opening the artifact in VS Code
 
 Now you are ready to connect to the artifact container in VS Code by clicking this
-[`vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/pdeligia/nekara-artifact`](vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/pdeligia/nekara-artifact)
+[`vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/uditagarwal97/nekara-artifact`](vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/uditagarwal97/nekara-artifact)
 (if you are unable to click the link, just copy paste it in your browser). This uses the "Open in VS
 Code" feature of GitHub.
 
@@ -83,14 +83,27 @@ more details in what each experiment is doing, please read the corresponding sec
 
 ### Experiment #1: Memcached (Table III)
 
-You can find the code for this experiment in the [Memcached](https://github.com/pdeligia/nekara-artifact/tree/main/Memcached) folder.
+You can find the code for this experiment in the [Memcached](Memcached) folder.
 
 To run the experiments for finding bugs in Memcached using Nekara (see Table III in page 5 of
 the paper) invoke the following command (which can take several minutes to complete) from the root
-`nekara-artifact` directory:
+`nekara-artifact` directory.
 ```
-bash artifact.sh memcached
+bash artifact.sh memcached 5
 ```
+This command will run each Memcached experiment 5 times and the results will be available in the 
+`nekara-artifact/Memcached/Results` folder. 
+
+**Expected Results:**
+```
+root@046c3b666554:/workspaces/nekara-artifact# cat Memcached/Results/*
+[Memcached Bug#2] Average number of iterations (5) in which bug could be triggered: 3
+[Memcached Bug#5] Average number of iterations (5) in which bug could be triggered: 3
+[Memcached Bug#8] Average number of iterations (5) in which bug could be triggered: 7
+```
+The observed experimentation results might slightly differ from the ones presented in the paper because the results presented in the paper were obtained
+with 10k test iterations. Running 10k iterations on docker container will take a significant amount of time and might even cause out-of-memory exceptions.
+
 **Note:** In the artifacts, we have only reproduced the Memcached Bugs that are non-trivial and likely to occur in the real-world scenerio.
 In the paper, we have reproduced nine Memcached bugs (Table II), however, out of those, only three bugs are non-trivial and impactful. Using Nekara,
 we could find four new bugs in Memcached and their detailed bug reports are available at: [Issue#738](https://github.com/memcached/memcached/issues/738),
@@ -148,7 +161,7 @@ might regress for some benchmarks (e.g. if a bug is found 1/10000 times, it migh
 unless you run the experiment more times). This is normal and expected due to concurrency/scheduling
 nondeterminism.
 
-The results from running the above command can be found in the `CoyoteActors/Results` directory.
+**Expected Results:** The results from running the above command can be found in the `CoyoteActors/Results` directory.
 There you will see multiple JSON files, one for each experiment. Each JSON file is named as
 `benchmark_target` where benchmark is a benchmark name from TABLE VI (for example
 `ChainReplication`) and target is one of `Coyote`, `Coyote_N` and `TPL_N` (the last two are
@@ -173,17 +186,24 @@ what running these experiments showcases.
 
 ### Experiment #3: Maple (Table VII)
 
-You can find the code for this experiment in the [Maple](https://github.com/pdeligia/nekara-artifact/tree/main/Maple) folder.
+You can find the code for this experiment in the [Maple](Maple) folder.
 
 To run the experiments for reproducing bugs found by Maple (see Table VII in page 10 of the paper)
 invoke the following command (which can take several minutes to complete) from the root
 `nekara-artifact` directory:
 ```
-bash artifact.sh maple
+bash artifact.sh maple 5
 ```
-
-**Note:** Some of the Maple benchmarks, like Memcached, consumes a large amount of time and memory for 10K
-iterations. So, we have reduced the number of test iterations to 100 by default in our scripts. You can increase the number of iterations by simply editing the artifact.sh script. The results presented in the paper were obtained by running 10K test iterations, and so, the observed results, with 100 iterations, might be slightly off than those reported in the paper.
+This command will run each Maple experiment 5 times and the results will be available in the 
+`nekara-artifact/Maple/Results` folder. 
+**Expected Results:**
+```
+root@046c3b666554:/workspaces/nekara-artifact# cat Maple/Results/*    
+[Maple Bug#2] Average number of iterations (5) in which bug could be triggered: 3
+[Maple Bug#3] Average number of iterations (5) in which bug could be triggered: 4
+[Maple Bug#4] Average number of iterations (5) in which bug could be triggered: 1
+```
+**Note:** Some of the Maple benchmarks, like Memcached, consumes a large amount of time and memory for 10K iterations. So, we have reduced the number of test iterations to 5 by default in our scripts. You can increase the number of iterations by simply editing the artifact.sh script. The results presented in the paper were obtained by running 10K test iterations, and so, the observed results, with 5 terations, might be slightly off than those reported in the paper. As mentioned in the README.md file, the SpiderMonkey benchmark (Maple Bug#1) is not included in the artifact, as it requires an older version of Ubuntu than 18.04 that is used by the artifact container.
 
 ### Experiment #4: TSVD (Table VII)
 

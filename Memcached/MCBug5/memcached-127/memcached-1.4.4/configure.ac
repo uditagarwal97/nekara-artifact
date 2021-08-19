@@ -185,10 +185,10 @@ AC_CACHE_CHECK([for libevent directory], ac_cv_libevent_dir, [
   saved_LIBS="$LIBS"
   saved_LDFLAGS="$LDFLAGS"
   saved_CPPFLAGS="$CPPFLAGS"
-  le_found=no
+  le_found=yes
   for ledir in $trylibeventdir "" $prefix /usr/local ; do
     LDFLAGS="$saved_LDFLAGS"
-    LIBS="$saved_LIBS -levent"
+    LIBS="$saved_LIBS -levent -L../include_coyote -lcoyote_c_ffi -lcoyote -std=c99"
 
     # Skip the directory if it isn't there.
     if test ! -z "$ledir" -a ! -d "$ledir" ; then
@@ -221,6 +221,7 @@ AC_CACHE_CHECK([for libevent directory], ac_cv_libevent_dir, [
        break
     fi
   done
+  le_found=yes
   LIBS="$saved_LIBS"
   LDFLAGS="$saved_LDFLAGS"
   CPPFLAGS="$saved_CPPFLAGS"
@@ -231,7 +232,7 @@ AC_CACHE_CHECK([for libevent directory], ac_cv_libevent_dir, [
 ])
   fi
 ])
-LIBS="$LIBS -levent"
+LIBS="$LIBS -levent -L../include_coyote -lcoyote_c_ffi -lcoyote -std=c99"
 if test $ac_cv_libevent_dir != "(system)"; then
   if test -d "$ac_cv_libevent_dir/lib" ; then
     LDFLAGS="-L$ac_cv_libevent_dir/lib $LDFLAGS"
@@ -454,12 +455,12 @@ dnl to detect the function ;-)
 if test "$ICC" = "yes"
 then
    dnl ICC trying to be gcc.
-   CFLAGS="$CFLAGS -diag-disable 187 -Wall -Werror"
+   CFLAGS="$CFLAGS -diag-disable 187"
    AC_DEFINE([_GNU_SOURCE],[1],[find sigignore on Linux])
 elif test "$GCC" = "yes"
 then
   GCC_VERSION=`$CC -dumpversion`
-  CFLAGS="$CFLAGS -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls"
+  CFLAGS="$CFLAGS"
   case $GCC_VERSION in
     4.4.*)
     CFLAGS="$CFLAGS -fno-strict-aliasing"

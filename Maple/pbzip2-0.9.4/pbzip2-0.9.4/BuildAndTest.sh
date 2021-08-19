@@ -1,13 +1,18 @@
 #!/bin/bash
 
+if [ "$#" -ne 1 ]; then
+    echo "Illegal number of parameters. Enter the number of iterations to run."
+    exit
+fi
+
 N=$1
+
 echo "*** This script will build and test pbzip2, instrumented with Nekara APIs. ***"
 echo "*** We will run the test case $N times and will report the average number of iterations in which bug could be triggered. ***"
 echo "*** It will take around 10 minutes for this script to complete. Please press [Enter] to continue... ***"
 
 # Cleanup
 sh Clean.sh
-rm -r ./TestResults
 
 # Build coyote-scheduler
 cd include_coyote/coyote-scheduler && mkdir build && cd ./build && cmake -G Ninja .. && ninja -j3 && cp ./src/libcoyote.so ../../ && cd ../../
@@ -37,4 +42,4 @@ done
 avg=$(echo $sum / $N | bc -l | awk '{printf("%d\n",$1 + 0.5)}')
 
 echo "\n\n\e[0;33m Average number of iterations in which bug could be triggered: $avg \e[0m"
-echo "Average number of iterations in which bug could be triggered: $avg" > TestResults/result.txt
+echo "[Maple Bug#3] Average number of iterations ($N) in which bug could be triggered: $avg" > TestResults/maple_bug3_result.txt

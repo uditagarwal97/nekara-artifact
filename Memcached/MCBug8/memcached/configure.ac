@@ -377,9 +377,9 @@ AC_CACHE_CHECK([for libevent directory], ac_cv_libevent_dir, [
 ])
   fi
 ])
-LIBS="-levent $LIBS"
-LIBS="-L/home/udit/memcached_2020/memcached/include_coyote/include -lmock_libevent -lcoyote_c_ffi -lcoyote $LIBS"
-LIBS="-L/home/udit/memcached_2020/memcached/coyotest -lcoyotest $LIBS"
+LIBS="-levent -lm $LIBS"
+LIBS="-L../include_coyote/include -lmock_libevent -lcoyote_c_ffi -lcoyote $LIBS"
+LIBS="-L../coyotest -lcoyotest $LIBS -lpthread"
 
 if test $ac_cv_libevent_dir != "(system)"; then
   if test -d "$ac_cv_libevent_dir/lib" ; then
@@ -625,9 +625,6 @@ AC_C_HTONLL
 
 dnl Check whether the user's system supports pthread
 AC_SEARCH_LIBS(pthread_create, pthread)
-if test "x$ac_cv_search_pthread_create" = "xno"; then
-  AC_MSG_ERROR([Can't enable threads without the POSIX thread library.])
-fi
 
 AC_CHECK_FUNCS(mlockall)
 AC_CHECK_FUNCS(getpagesizes)
@@ -785,7 +782,7 @@ then
 elif test "$GCC" = "yes"
 then
   GCC_VERSION=`$CC -dumpversion`
-  CFLAGS="$CFLAGS -Wall -Werror -pedantic -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls"
+  CFLAGS="$CFLAGS"
   if test "x$enable_asan" = "xyes"; then
     CFLAGS="$CFLAGS -fsanitize=address"
   fi

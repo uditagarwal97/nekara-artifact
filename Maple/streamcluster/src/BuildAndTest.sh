@@ -1,13 +1,18 @@
 #!/bin/bash
 
+if [ "$#" -ne 1 ]; then
+    echo "Illegal number of parameters. Enter the number of iterations to run."
+    exit
+fi
+
 N=$1
+
 echo "*** This script will build and test streamcluster, instrumented with Nekara APIs. ***"
 echo "*** We will run the test case $N times and will report the average number of iterations in which bug could be triggered. ***"
 echo "*** It will take around 10 minutes for this script to complete. Please press [Enter] to continue... ***"
 
 # Cleanup
 sh Clean.sh
-rm -r ./TestResults
 
 # Build coyote-scheduler
 cd include_coyote/coyote-scheduler && mkdir build && cd ./build && cmake -G Ninja .. && ninja -j3 && cp ./src/libcoyote.so ../../ && cd ../../
@@ -27,14 +32,14 @@ sum=0
 # Run test for 100 iterations
 for i in $(seq 1 $N);
 	do
-		# echo "\n\n **** Running test iteration # $i ****\n\n"
+		echo "\n\n **** Running test iteration # $i ****\n\n"
 		rm nohup.out
 		nohup ./streamcluster 2 5 1 10 10 5 none output.txt 2 
 		sum=$((sum + $(cat nohup.out | grep -c "iteration")))
-		# cat nohup.out | tail -n 1
+		cat nohup.out | tail -n 1
 done
 
 avg=$(echo $sum / $N | bc -l | awk '{printf("%d\n",$1 + 0.5)}')
 
 echo "\n\n\e[0;33m Average number of iterations in which bug could be triggered: $avg \e[0m"
-echo "Average number of iterations in which bug could be triggered: $avg" > TestResults/result.txt
+echo "[Maple Bug#4] Average number of iterations ($N) in which bug could be triggered: $avg" > TestResults/maple_bug4_result.txt
