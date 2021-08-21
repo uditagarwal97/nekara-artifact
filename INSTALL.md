@@ -92,7 +92,7 @@ the paper) invoke the following command (which can take several minutes to compl
 bash artifact.sh memcached 5
 ```
 This command will run each Memcached experiment 5 times and the results will be available in the 
-`nekara-artifact/Memcached/Results` folder. 
+`nekara-artifact/Memcached/Results` folder. Note that while building and running Memcached experiments it is perfectly fine to receive error messages like "Aborted", "Segmentation fault".These errors are produced when the concurrency bugs are triggered.
 
 **Expected Results:**
 ```
